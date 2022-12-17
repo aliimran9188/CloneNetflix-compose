@@ -3,8 +3,16 @@ package id.tomuchcoffee.netflixclone
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.Composable
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.Modifier
+import id.tomuchcoffee.netflixclone.data.MovieDatasource
+import id.tomuchcoffee.netflixclone.domain.model.Movie
+import id.tomuchcoffee.netflixclone.ui.component.MovieAppBar
+import id.tomuchcoffee.netflixclone.ui.screen.MovieGridScreen
 import id.tomuchcoffee.netflixclone.ui.screen.MovieListScreen
 import id.tomuchcoffee.netflixclone.ui.theme.NetflixCloneTheme
 
@@ -23,5 +31,24 @@ class MainActivity : ComponentActivity() {
 @ExperimentalMaterial3Api
 @Composable
 fun NetflixCloneApps(){
-    MovieListScreen()
+
+    val movies : List<Movie> by rememberSaveable {
+        mutableStateOf(MovieDatasource.getNowPlayingMovie())
+    }
+    var isGrid by remember {
+        mutableStateOf(false)
+    }
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
+        topBar = {
+            MovieAppBar(
+                onViewChange = {isGrid = it}
+            )
+        })
+    {  contentPadding ->
+        if (isGrid) MovieGridScreen(contentPadding, movies)
+        else MovieListScreen(contentPadding, movies)
+    }
+
+
 }
