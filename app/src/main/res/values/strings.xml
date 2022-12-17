@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">NetflixClone</string>
+    <string name="movie_image">Movie Image</string>
+    <string name="netflix_app">Netflixapp</string>
+</resources>
